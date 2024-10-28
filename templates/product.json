@@ -1,0 +1,247 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+ {
+  "sections": {
+    "main": {
+      "type": "product-main",
+      "blocks": {
+        "additional_WrKMTK": {
+          "type": "additional",
+          "settings": {
+            "icon": "size",
+            "label": "Size guide & tips",
+            "url": "#"
+          }
+        },
+        "additional_8zHAfa": {
+          "type": "additional",
+          "settings": {
+            "icon": "calendar",
+            "label": "Book an expert fitting",
+            "url": "#"
+          }
+        },
+        "sticker_YFAVbC": {
+          "type": "sticker",
+          "settings": {
+            "icon": "shipping-fast",
+            "label": "Free Express Shipping $99+",
+            "url": ""
+          }
+        },
+        "sticker_xUJLp9": {
+          "type": "sticker",
+          "settings": {
+            "icon": "measuring-tape",
+            "label": "Book in With Fit Squad",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "additional_WrKMTK",
+        "additional_8zHAfa",
+        "sticker_YFAVbC",
+        "sticker_xUJLp9"
+      ],
+      "settings": {
+        "enable_gallery_zoom": true,
+        "additional_title": "Unsure on sizing? We have a range of resources to help",
+        "add_to_cart_message": "<p>Receive $20 in rewards with Fit Club<\/p>",
+        "tool_tip_content": ""
+      }
+    },
+    "size-guide": {
+      "type": "product-size-guide",
+      "blocks": {
+        "page_wXkVmw": {
+          "type": "page",
+          "settings": {
+            "heading": "Conversion Guide",
+            "page": "conversion-guide",
+            "productTag": "SizeGuide:Clothing"
+          }
+        },
+        "page_GHtqXy": {
+          "type": "page",
+          "settings": {
+            "heading": "Body Measurements",
+            "page": "body-measurements",
+            "productTag": "SizeGuide:Clothing"
+          }
+        },
+        "page_qxaJz9": {
+          "type": "page",
+          "settings": {
+            "heading": "Shoes",
+            "page": "shoes-size-guide",
+            "productTag": "SizeGuide:Shoes"
+          }
+        },
+        "page_9gKUk9": {
+          "type": "page",
+          "settings": {
+            "heading": "Belts",
+            "page": "belts-size-guide",
+            "productTag": "SizeGuide:Belts"
+          }
+        },
+        "page_id9MAr": {
+          "type": "page",
+          "settings": {
+            "heading": "Accessories",
+            "page": "accessories-size-guide",
+            "productTag": "SizeGuide:Accessories"
+          }
+        },
+        "page_36L7JV": {
+          "type": "page",
+          "settings": {
+            "heading": "Kids",
+            "page": "kids-size-guide",
+            "productTag": "SizeGuide:Kids"
+          }
+        }
+      },
+      "block_order": [
+        "page_wXkVmw",
+        "page_GHtqXy",
+        "page_qxaJz9",
+        "page_9gKUk9",
+        "page_id9MAr",
+        "page_36L7JV"
+      ],
+      "settings": {
+        "heading_review_girls": "Meet Our Review Models",
+        "heading_size_guide": "Size Guide",
+        "note_modal": "<p>Please note that measurements may vary between garments due to fabric, fit and style. Check your body measurements against this guide to ensure the right fit.<\/p>"
+      }
+    },
+    "recommend_carousel_T3wXTa": {
+      "type": "recommend-carousel",
+      "settings": {
+        "title": "Complete The Look",
+        "subtitle": "Styles to match back with",
+        "card_size": "medium",
+        "profile": "product-page-cross-sell"
+      }
+    },
+    "card_grid_X9XWHC": {
+      "type": "card-grid",
+      "blocks": {
+        "card_anECUt": {
+          "type": "card",
+          "settings": {
+            "title": "Natural",
+            "subtitle": "",
+            "cta": "",
+            "link": "",
+            "cta_position": ""
+          }
+        },
+        "card_jxh3EU": {
+          "type": "card",
+          "settings": {
+            "title": "Honest",
+            "subtitle": "",
+            "cta": "",
+            "link": "",
+            "cta_position": ""
+          }
+        },
+        "card_iVB9Ae": {
+          "type": "card",
+          "settings": {
+            "title": "Considered",
+            "subtitle": "",
+            "cta": "",
+            "link": "",
+            "cta_position": ""
+          }
+        },
+        "card_7e4wXV": {
+          "type": "card",
+          "settings": {
+            "title": "",
+            "subtitle": "",
+            "cta": "",
+            "link": "",
+            "cta_position": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_anECUt",
+        "card_jxh3EU",
+        "card_iVB9Ae",
+        "card_7e4wXV"
+      ],
+      "settings": {
+        "brand_background_color": "white",
+        "title": "Our design philosophy is rooted in nature, simplicity, and honesty, heroing quality fabrics and timeless details. Crafted with ease in mind, our collection focuses on clean lines and subtle features, offering uncompromising seasonal essentials.",
+        "title_position": "left",
+        "text_color": "#ffffff",
+        "padding": "medium",
+        "layout_mobile": "stacked",
+        "layout_card": "overlay",
+        "image_size": "tall"
+      }
+    },
+    "tabbed_carousel_cfdk7y": {
+      "type": "tabbed-carousel",
+      "blocks": {
+        "profile_NwpyAb": {
+          "type": "profile",
+          "settings": {
+            "profile": "site-wide-trending",
+            "label": "You Might Like"
+          }
+        },
+        "profile_UcV6wh": {
+          "type": "profile",
+          "settings": {
+            "profile": "pdp-similar-products",
+            "label": "Recently Viewed"
+          }
+        }
+      },
+      "block_order": [
+        "profile_NwpyAb",
+        "profile_UcV6wh"
+      ],
+      "settings": {
+        "card_size": "medium"
+      }
+    },
+    "172982461084a34003": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_CpWD4Y": {
+          "type": "shopify:\/\/apps\/klaviyo-reviews\/blocks\/product-reviews\/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_CpWD4Y"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main",
+    "size-guide",
+    "recommend_carousel_T3wXTa",
+    "card_grid_X9XWHC",
+    "tabbed_carousel_cfdk7y",
+    "172982461084a34003"
+  ]
+}
