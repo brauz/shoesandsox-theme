@@ -1,0 +1,13 @@
+{% comment %}
+  Snippet: Retailer Appointment - Powered by Brauz
+{% endcomment %}
+<script>
+  const script = document.createElement("script");
+  script.setAttribute("src", "https://d3aq2u4yw77ivo.cloudfront.net/retailer-appointment/shoesandsox/retailer-appointment.shoesandsox.prod.js");
+  script.setAttribute("type", "text/javascript");
+  script.setAttribute("async", true);
+  document.body.appendChild(script);
+  script.onload = function(){
+    window.Brauz.initializeBrauzBookAStylist("SHOESANDSOX");  
+  };
+</script>
