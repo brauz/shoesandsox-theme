@@ -1,0 +1,108 @@
+{% comment %}
+  Snippet: Product Form
+  Only works within the context of the PDP.
+{% endcomment %}
+{% liquid
+  assign small_size = product.metafields.custom.smaller_product_reference.value
+  assign large_size = product.metafields.custom.bigger_product_reference.value
+
+  if small_size != blank
+    assign small_size = small_size.handle
+  endif
+
+  if large_size != blank
+    assign large_size = large_size.handle
+  endif
+
+  assign sizing_tag_prefix = 'x-sizing'
+  assign sizing_tag = ''
+
+  assign tags = ''
+  for tag in product.tags
+    assign tags = tags | append: tag | append: ','
+    if tag contains sizing_tag_prefix
+      assign sizing_tag = tag | split: ':' | last | strip
+    endif
+  endfor
+%}
+{% assign id__product_form = 'product-form' %}
+{% assign variant = product.selected_or_first_available_variant %}
+
+{% for value in product.options_by_name.Width.values %}
+  {% assign width_objects = width_objects | append: value.name | append: ',' %}
+{% endfor %}
+
+{% capture product_variants %}
+
+[
+{%- for variant in product.variants -%}
+  {%- assign utopia = variant.metafields.utopia -%}
+  { 'id': '{{ variant.id }}', 'name': '{{ variant.title }}', 'available' : {{ variant.available }}, 'age_group': '
+  {{- utopia.age_group -}}
+  ', 'cm': '{{ utopia.centimeter }}', 'uk': '{{ utopia.kids_uk }}', 'us': '{{ utopia.kids_us }}', 'eu': '{{ utopia.euro }}'
+  {%- if variant.option2.size > 0 -%},'width': '{{ variant.option2 }}'{%- endif -%}
+  } {%- unless forloop.last == true -%},{%- endunless -%}
+{%- endfor -%}
+]
+
+{% endcapture %}
+
+<script>
+  const gloabl_product_id = '{{ product.id }}'
+</script>
+
+<div class="group/in-view bg-primary-white" data-target="product-form">
+  <x-modal
+    class="group/form"
+    {% if variant.available %}
+      data-ui="visible"
+    {% endif %}
+  >
+    <form id="{{ id__product_form }}" class="relative flex scroll-mt-32 flex-col bg-white">
+      <input type="hidden" name="quantity" value="1">
+      <x-product-selector
+        class="breathe block min-h-10 w-full scroll-m-80"
+        data-tags="{{ tags }}"
+        data-type="{{ sizing_tag }}"
+        data-width="{{ width_objects }}"
+        data-product="{{ product.id }}"
+        data-small="{{ small_size }}"
+        data-bigger="{{ large_size }}"
+        data-options="{{ product_variants }}"
+      ></x-product-selector>
+
+      {% comment %} </div> {% endcomment %}
+      {% comment %} TODO: work out where this data needs to come from {% endcomment %}
+      <div class="flex flex-col gap-2 bg-white px-8 pb-4 pt-4">
+        <div class="paragraph-sm font-bold">
+          {{ additional_title }}
+        </div>
+        <div class="paragraph-md flex flex-col pb-6 text-black md:flex-row">
+          {% if points.size > 0 %}
+            {% for point in points %}
+              {% assign item_class = '' %}
+              {% comment %}
+                {% case forloop.index %}
+                  {% when 1 %}
+                    {% assign item_class = 'bg-secondary-neon -rotate-3 self-start' %}
+                  {% when 2 %}
+                    {% assign item_class = 'bg-secondary-violet rotate-3 self-end' %}
+                {% endcase %}
+              {% endcomment %}
+              <div class="flex items-center gap-2 p-4 pb-2 pl-0 {{ item_class }}">
+                {% render 'icon' with id: point.settings.icon, class: 'shrink-0' %}
+                {% if point.settings.url != blank %}
+                  <a class="underline underline-offset-4 ring-offset-2" href="{{ point.settings.url }}">
+                    {{- point.settings.label -}}
+                  </a>
+                {% else %}
+                  <p class=" ring-offset-2">{{ point.settings.label }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </x-modal>
+</div>

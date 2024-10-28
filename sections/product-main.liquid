@@ -1,0 +1,207 @@
+{% liquid
+  if template contains 'gift-card' or product.gift_card?
+    assign class_inner = 'pt-5 pb-8'
+  else
+    assign class_inner = 'py-8'
+  endif
+
+  assign title = 'product.general.recently_viewed' | t
+  assign discountTitle = section.settings.discount_title
+  assign discountDetail = section.settings.discount_detail
+  assign discountDesc = section.settings.discount_desc
+  assign balanceCheckUrl = section.settings.balance_check_url
+  assign balanceCheckLabel = section.settings.balance_check_label
+  assign termsOfUseTitle = section.settings.terms_of_use_title
+  assign termsOfUse = section.settings.terms_of_use
+  assign customisationProduct = section.settings['customisation-product']
+  assign additional_title = section.settings.additional_title
+  assign usps = section.blocks | where: 'type', 'usp'
+  assign points = section.blocks | where: 'type', 'additional'
+  assign stickers = section.blocks | where: 'type', 'sticker'
+
+  assign product_delivery_returns_global = settings.product_delivery_returns
+
+  assign is_discounted = false
+  assign price = product.price
+  assign compared_price = product.compare_at_price
+
+  if price < compared_price
+    assign is_discounted = true
+  endif
+
+  # Product Add To Cart settings
+  assign select_size_message = section.settings.discount_title
+  assign add_to_cart_message = section.settings.discount_detail
+  assign add_to_cart_show_price = section.settings.discount_detail
+  assign fit_club_message = section.settings.discount_desc
+  assign fit_club_info_link = section.settings.discount_desc
+
+  capture product_pairing
+    render 'product-upsell' with product_id: product.id
+  endcapture
+
+  capture find_in_store
+    render 'find-in-store'
+  endcapture
+
+  capture product_features
+    render 'product-details-features'
+  endcapture
+
+  # Creats a script tag that will generate a global JSON object
+  # that we can use in our product-size-guide module.
+  # used in the x-product-size-guide custom element
+
+  capture size_guide_element
+    render 'parse-size-guide-data'
+    echo '<x-product-size-guide></x-product-size-guide>'
+    echo product.metafields.products.composition
+  endcapture
+
+  render 'parse-product-select-data'
+%}
+
+<input type="hidden" data-role="product_id" value="{{ product.id }}">
+<div class=" flex flex-col  md:flex-row">
+  <div class="shrink-0 md:basis-2/3">
+    {%- render 'product-gallery' -%}
+  </div>
+  <div class="relative  flex h-full flex-col divide-y divide-neutrals-medium-grey border-t border-neutrals-medium-grey  md:basis-1/3 ">
+    <div class="contents">
+      <div>
+        {% render 'product-info', is_discounted: is_discounted %}
+        {% render 'product-swatches' %}
+        {% render 'product-form' with points: points, additional_title: additional_title %}
+      </div>
+      {% render 'product-add-to-cart-button',
+        is_discounted: is_discounted,
+        add_to_cart_message: section.settings.add_to_cart_message,
+        top_tip_content: section.settings.tool_tip_content
+      %}
+    </div>
+
+    {% render 'product-stickers' with stickers: stickers %}
+    {% render 'product-form-actions' %}
+    {% render 'product-usps' with usps: usps %}
+    {% liquid
+      assign body_class = ''
+      assign heading_class = 'font-bold paragraph-lg py-4'
+    %}
+
+    <div class="">
+      {% render "accordion-row" with heading: 'Find In Store', content: find_in_store, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class, trigger_open: true %}
+      {% render "accordion-row" with heading: 'Product Details & Features', content: product_features, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class %}
+      {% render "accordion-row" with heading: 'Size Guide & Fit Tips', content: size_guide_element, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class %}
+      {% capture materials_and_care %}
+      <ul>
+        <li><span>Product Code:</span> {{ product.metafields.utopia.colour_code }}</li>
+        <li><span>Sole Material:</span> {{ product.metafields.utopia.sole_material }}</li>
+        <li><span>Upper Material:</span> {{ product.metafields.utopia.upout_material }}</li>
+        <li><span>Country Of Origin:</span> {{ product.metafields.utopia.coo }}</li>
+      </ul>
+      {% endcapture %}
+      {% render "accordion-row" with heading: 'Materials & Care', content: materials_and_care, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class %}
+      {% render "accordion-row" with heading: 'Delivery & Returns', content: settings.delivery_and_returns, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white' , body_class: body_class %}
+      {% render "accordion-row" with heading: 'We recommend pairing with:', content: product_pairing, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white' , body_class: body_class, trigger_open: true %}
+    </div>
+  </div>
+</div>
+
+<script>
+  const productHandle = {{ product.handle | json }} ?? undefined;
+  const productSku = {{ product.first_available_variant.sku | json }} ?? undefined;
+</script>
+
+{%- capture src_url -%} {{- 'section-product-main.js' | asset_url -}} {%- endcapture -%}
+{%- render 'atom_script', src: src_url, priority: 'normal', type: 'defer' -%}
+
+{% schema %}
+{
+  "name": "Product Main",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_gallery_zoom",
+      "label": "Enable gallery zoom",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "additional_title",
+      "label": "Additonal Info Title"
+    },
+    {
+      "type": "richtext",
+      "id": "add_to_cart_message",
+      "label": "Add To Cart Message",
+      "default": "<p>Receive $20 in rewards with Fit Club</p>"
+    },
+    {
+      "type": "text",
+      "id": "tool_tip_content",
+      "label": "Tooltip Content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "USP",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "graphic",
+          "label": "Graphic"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        }
+      ]
+    },
+    {
+      "type": "additional",
+      "name": "Additional Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Url"
+        }
+      ]
+    },
+    {
+      "type": "sticker",
+      "name": "Sticker Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Path"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

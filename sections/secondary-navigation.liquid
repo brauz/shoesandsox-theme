@@ -1,0 +1,68 @@
+{% comment %}
+  Secondary Nav
+  Provides some support to render the secondary nav with respect to it's placement (desktop nav vs. mobile nav)
+
+  Params:
+  - menu
+  - class
+{% endcomment %}
+
+{%- liquid
+  assign messages = section.blocks | where: 'type', 'messages'
+-%}
+
+{% assign link_classes = 'paragraph-sm underline underline-offset-2 flex gap-2 shrink-0' %}
+
+<div class="relative z-20 flex h-12 items-center justify-between gap-6 bg-secondary-green px-4 text-primary-white md:h-10 md:gap-8 md:px-10">
+  {% for link in section.settings.menu.links %}
+    {% render 'navigation-item' with item: link, class: 'btn btn-sm gap-2 btn-inline underline btn-text-white' %}
+  {% endfor %}
+  <x-transition
+    class="absolute inset-0 m-auto hidden h-fit w-4/5 items-center justify-center md:flex"
+  >
+    {%- for message in messages -%}
+      <div
+        data-role="child"
+        class="{% if forloop.index > 1 %} opacity-0 {% endif %} absolute  left-0 top-0 h-full w-full text-center font-bold text-white transition-all duration-500"
+      >
+        <a
+          class="paragraph-sm m-auto flex h-full items-center justify-center font-bold"
+          href="{% if message.settings.link != blank %} {{ message.settings.link }} {% else %}#{% endif %}"
+        >
+          {{- message.settings.message -}}
+        </a>
+      </div>
+    {%- endfor -%}
+  </x-transition>
+</div>
+
+{% schema %}
+{
+  "name": "Secondary Navigation",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "messages",
+      "name": "Messages",
+      "settings": [
+        {
+          "type": "text",
+          "id": "message",
+          "label": "Message"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

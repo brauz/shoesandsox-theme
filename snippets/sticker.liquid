@@ -1,0 +1,93 @@
+{% assign sticker = shop.metaobjects.sticker[handle] %}
+
+{% if sticker %}
+  {% comment %} Metaobject Data {% endcomment %}
+  {% assign tilt = sticker.tilt.value %}
+  {% assign shape = sticker.shape.value %}
+  {% assign text_colour = sticker.text_colour.value.value %}
+  {% assign background_colour = sticker.background_colour.value.value %}
+
+  {% comment %} External Inputs {% endcomment %}
+  {% assign placement = placement | default: 'top-left' %}
+  {% assign size = size | default: 'medium' %}
+  {% assign animate_on = animate_on | default: 'never' %}
+
+  {% comment %} Classes {% endcomment %}
+  {% assign body_classes = 'absolute group text-md md:text-xl font-bold' %}
+  {% case tilt %}
+    {% when 'Left' %}
+      {% assign body_classes = body_classes | append: ' -rotate-6' %}
+    {% when 'Right' %}
+      {% assign body_classes = body_classes | append: ' rotate-6' %}
+  {% endcase %}
+  {% case size %}
+    {% when 'large' %}
+      {% assign body_classes = body_classes | append: ' scale-150' %}
+    {% when 'small' %}
+      {% assign body_classes = body_classes | append: ' scale-75' %}
+  {% endcase %}
+
+  {% case placement %}
+    {% when 'top' %}
+      {% assign body_classes = body_classes | append: ' top-0 -translate-y-1/2 left-1/2 -translate-x-1/2' %}
+    {% when 'left' %}
+      {% assign body_classes = body_classes | append: ' top-1/2 -translate-y-1/2 left-0 -translate-x-1/2' %}
+    {% when 'right' %}
+      {% assign body_classes = body_classes | append: ' top-1/2 -translate-y-1/2 right-0 translate-x-1/2' %}
+    {% when 'bottom' %}
+      {% assign body_classes = body_classes | append: ' bottom-0 translate-y-1/2 left-1/2 -translate-x-1/2' %}
+    {% when 'top-left' %}
+      {% assign body_classes = body_classes | append: ' top-0 -translate-y-1/2 left-0 -translate-x-1/2' %}
+    {% when 'top-right' %}
+      {% assign body_classes = body_classes | append: ' top-0 -translate-y-1/2 right-0 translate-x-1/2' %}
+    {% when 'bottom-left' %}
+      {% assign body_classes = body_classes | append: ' bottom-0 translate-y-1/2 left-0 -translate-x-1/2' %}
+    {% when 'bottom-right' %}
+      {% assign body_classes = body_classes | append: ' bottom-0 translate-y-1/2 right-0 translate-x-1/2' %}
+  {% endcase %}
+
+  {% assign animate_classes = '' %}
+  {% case animate_on %}
+    {% when 'hover' %}
+      {% case shape %}
+        {% when 'Square' %}
+          {% assign animate_classes = ' group-hover:animate-wiggle' %}
+        {% when 'Oval' %}
+          {% assign animate_classes = ' group-hover:animate-wiggle' %}
+        {% when 'Star' %}
+          {% assign animate_classes = ' group-hover:animate-spin' %}
+      {% endcase %}
+    {% when 'always' %}
+      {% case shape %}
+        {% when 'Square' %}
+          {% assign animate_classes = ' animate-wiggle' %}
+        {% when 'Oval' %}
+          {% assign animate_classes = ' animate-wiggle' %}
+        {% when 'Star' -%}
+          {% assign animate_classes = ' animate-spin duration-1000' %}
+      {% endcase %}
+  {% endcase %}
+
+  {% capture body %}
+    {% case shape %}
+      {% when 'Square' %}
+          <span class="absolute -inset-1 bg-[--background-colour]"></span>
+      {% when 'Oval' %}
+        <span class="absolute -inset-8 rounded-[50%] bg-[--background-colour]"></span>
+      {% when 'Star' %}
+        <span class="absolute -inset-x-6 aspect-1 top-1/2 -translate-y-1/2 text-[--background-colour]">
+          {% assign class = 'w-full h-full aspect-1' | append: animate_classes %}
+          {% render 'icon' with id: 'CharacterBody_Starburst', class: class %}
+        </span>
+    {% endcase %}
+  {% endcapture %}
+
+  <div style="--background-colour:{{ background_colour }};--text-colour:{{ text_colour }}" class="{{ body_classes }}">
+    <p class="{% if shape != 'Star' %}{{ animate_classes }}{% endif %}">
+      {{ body }}
+      <span class="relative text-center leading-none z-10 text-[--text-colour] whitespace-nowrap">
+        {{- sticker.text | split: '/' | join: '<br />' -}}
+      </span>
+    </p>
+  </div>
+{% endif %}
