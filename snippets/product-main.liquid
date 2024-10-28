@@ -40,6 +40,10 @@
     render 'product-upsell' with product_id: product.id
   endcapture
 
+  capture find_in_store
+    render 'find-in-store'
+  endcapture
+
   capture product_features
     render 'product-details-features'
   endcapture
@@ -85,7 +89,7 @@
     %}
 
     <div class="">
-      {% render "accordion-row" with heading: 'Find In Store', content: product.metafields.products.short_description, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class, trigger_open: true %}
+      {% render "accordion-row" with heading: 'Find In Store', content: find_in_store, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class, trigger_open: true %}
       {% render "accordion-row" with heading: 'Product Details & Features', content: product_features, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class %}
       {% render "accordion-row" with heading: 'Size Guide & Fit Tips', content: size_guide_element, icon_type: 'chevron', list_type: 'pdp', heading_class: heading_class, additionl_wrapper_class: 'px-8 bg-white', body_class: body_class %}
       {% capture materials_and_care %}
