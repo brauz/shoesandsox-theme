@@ -1,0 +1,39 @@
+{%- comment -%}
+  Snippet: Product Stickers
+  Stickers = {block[]}
+{%- endcomment -%}
+
+{%- liquid
+  assign soft_limit = 2
+  assign base_class = 'text-black min-h-8 flex-grow flex flex-row gap-2 p-4 items-center font-bold'
+  assign left_sticker_class = base_class | append: ' ' | append: 'bg-secondary-neon -rotate-3 self-start'
+  assign right_sticker_class = base_class | append: ' ' | append: 'bg-secondary-violet rotate-3 self-end'
+-%}
+<div
+  data-role="sticker-container"
+  class="paragraph-md flex flex-col px-8 py-8 text-black"
+>
+  {%- for sticker in stickers -%}
+    {%- liquid
+      # index starts at 1 not 0
+      assign index = forloop.index
+      assign icon = sticker.settings.icon
+      assign label = sticker.settings.label
+      assign path = sticker.settings.url
+    -%}
+    {% unless index > soft_limit %}
+      <a
+        href="{{ path }}"
+        data-role="sticker"
+        class="{% if index == 1 %}  {{ left_sticker_class }} {% else %} {{ right_sticker_class }} {% endif %}"
+      >
+        {% if icon != blank %}
+          {% render 'icon' with id: icon, class: "shrink-0" %}
+        {% endif %}
+        {% if label != blank %}
+          <div>{{ label }}</div>
+        {% endif %}
+      </a>
+    {% endunless %}
+  {%- endfor -%}
+</div>
