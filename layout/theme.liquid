@@ -1,0 +1,73 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    >
+
+    {% liquid
+      render 'gtm-head'
+      render 'preconnect-required-origins'
+      render 'favicon'
+      render 'seo-title'
+      render 'social-meta'
+      render 'font-faces'
+      render 'gm-state'
+      render 'translate'
+      render 'theme-styles'
+      render 'delayed-scripts'
+      render 'vendor-scripts'
+      render 'klaviyo-tracking'
+      render 'marker-io'
+
+      if settings.searchspring_enable and settings.searchspring_product_site_id != blank
+        render 'searchspring-init'
+      endif
+    %}
+
+    {{ content_for_header }}
+    {%- render 'sca.storelocator' -%}
+  </head>
+
+  <body id="{{ page_title | handle }}" class="no-touch template template-{{ template.name | handle }}">
+    <a class="skip_link hidden" id="skip_to_content" href="#main">Skip to Main Content</a>
+    <div id="page">
+      {%- section 'secondary-navigation' -%}
+      {%- section 'announcement-bar' -%}
+      {%- section 'site-header' -%}
+
+      <main id="MainContent" role="main" tabindex="-1" class="relative -mt-20 bg-primary-white md:-mt-28">
+        {%- if template.suffix contains 'generic' -%}
+          {% render 'generic-page-menu', page_heading: page.title, content: content_for_layout %}
+        {% else %}
+          {{ content_for_layout }}
+        {% endif %}
+      </main>
+
+      {%- comment -%} Used to render the gloabl drawer modal for the Key looks section. {%- endcomment -%}
+      {% comment %} TODO: conditionally render this if template isn't key-looks related {% endcomment %}
+      {% render 'key-look-drawer' %}
+      {% comment %} {%- section 'topbar' -%} {% endcomment %}
+      {% comment %} {%- section 'footer-marquee' -%} {% endcomment %}
+      {%- section 'footer-signup' -%}
+      {%- section 'footer-main' -%}
+      {%- section 'footer-bottom' -%}
+      {% section 'schema' %}
+    </div>
+    {% liquid
+      section 'stock-levels'
+      section 'promotions'
+      render 'notice-global'
+      render 'theme-scripts'
+      render 'gtm-body'
+      render 'spritesheet'
+
+      render 'searchspring-intellisuggest'
+    %}
+  </body>
+</html>
